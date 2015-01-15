@@ -23,6 +23,7 @@
 #define MQTT_RECONNECT_TIMEOUT 	5	/*second*/
 
 #define CLIENT_SSL_ENABLE
-
+#define DEFAULT_SECURITY	0
+#define QUEUE_BUFFER_SIZE	2048
 
 #endif

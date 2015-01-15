@@ -137,8 +137,10 @@ void mqttConnectedCb(uint32_t *args)
 {
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Connected\r\n");
-	MQTT_Subscribe(&mqttClient, "sensor/node1/control/led1");
-	//MQTT_Subscribe(&mqttClient, "sensor/node1/control/led2");
+	INFO("MQTT: Starting subscription\r\n");
+	MQTT_Subscribe(client, "sensor/node1/control/led1", 0);
+	MQTT_Subscribe(client, "sensor/node1/control/led2", 0);
+	MQTT_Publish(client, "sensor/node1/boot", "hello2", 6, 0, 0);
 }
 
 void mqttDisconnectedCb(uint32_t *args)
