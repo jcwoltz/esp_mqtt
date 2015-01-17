@@ -6,7 +6,7 @@
 
 /*DEFAULT CONFIGURATIONS*/
 
-#define MQTT_HOST			"util1.wocspool.com" //or "192.168.11.1"
+#define MQTT_HOST			"104.200.29.35" //or "192.168.11.1"
 #define MQTT_PORT			1883
 #define MQTT_BUF_SIZE		1024
 #define MQTT_KEEPALIVE		120	 /*second*/

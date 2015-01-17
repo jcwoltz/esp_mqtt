@@ -41,15 +41,15 @@
 #include "mqtt.h"
 #include "queue.h"
 
-char willTopic[] = "sensor/node1/alive";
-char willMessage[] = "offline";
-
 #define MQTT_TASK_PRIO        		0
 #define MQTT_TASK_QUEUE_SIZE    	1
 
 #ifndef QUEUE_BUFFER_SIZE
 #define QUEUE_BUFFER_SIZE		 		2048
 #endif
+
+	char willTopic[] = "sensor/node1/dead";
+	char willMessage[] = "yes";
 
 unsigned char *default_certificate;
 unsigned int default_certificate_len = 0;
@@ -483,8 +483,8 @@ void MQTT_InitClient(MQTT_Client *mqttClient, uint8_t* client_id, uint8_t* clien
 	mqttClient->connect_info.password = client_pass;
 	mqttClient->connect_info.will_topic = willTopic;
 	mqttClient->connect_info.will_message = willMessage;
-	mqttClient->connect_info.will_qos = 0;
-	mqttClient->connect_info.will_retain = 0;
+	mqttClient->connect_info.will_qos = 2;
+	mqttClient->connect_info.will_retain = 1;
 
 	mqttClient->connect_info.keepalive = keepAliveTime;
 	mqttClient->connect_info.clean_session = 1;

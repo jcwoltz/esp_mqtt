@@ -44,8 +44,8 @@ MQTT_Client mqttClient;
 #define user_procTaskPrio        3
 #define user_procTaskQueueLen    1
 
-LOCAL os_event_t    user_procTaskQueue[user_procTaskQueueLen];
-LOCAL os_timer_t dht22_timer;
+LOCAL os_event_t	user_procTaskQueue[user_procTaskQueueLen];
+LOCAL os_timer_t	dht22_timer;
 //scl gpio14 pin17
 //sda gpio2 pin20
 //dht gpio12 pin 16
@@ -102,16 +102,16 @@ LOCAL void ICACHE_FLASH_ATTR dht22_cb(void *arg)
 
 void some_timerfunc(void *arg)
 {
-    //Do blinky stuff
+    //Do blinky stuff on LED4
     if (GPIO_REG_READ(GPIO_OUT_ADDRESS) & BIT13)
     {
-        //Set GPIO2 to LOW
+        //Set GPIO13 to LOW
 	//GPIO_OUTPUT_SET(LED4_GPIO, 0);
         gpio_output_set(0, BIT13, BIT13, 0);
     }
     else
     {
-        //Set GPIO2 to HIGH
+        //Set GPIO13 to HIGH
 	//GPIO_OUTPUT_SET(LED4_GPIO, 1);
         gpio_output_set(BIT13, 0, BIT13, 0);
     }
@@ -125,8 +125,6 @@ user_procTask(os_event_t *events)
 }
 
 
-
-
 void wifiConnectCb(uint8_t status)
 {
 	if(status == STATION_GOT_IP){
@@ -138,9 +136,10 @@ void mqttConnectedCb(uint32_t *args)
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Connected\r\n");
 	INFO("MQTT: Starting subscription\r\n");
-	MQTT_Subscribe(client, "sensor/node1/control/led1", 0);
-	MQTT_Subscribe(client, "sensor/node1/control/led2", 0);
-	MQTT_Publish(client, "sensor/node1/boot", "hello2", 6, 0, 0);
+	MQTT_Subscribe(client, "sensor/node1/control/led1", 2);
+	//uncomment next line for second subscription, but the first uses wildcard
+	MQTT_Subscribe(client, "sensor/node1/control/led2", 2);
+	MQTT_Publish(client, "sensor/node1/a", "online", 6, 0, 0);
 }
 
 void mqttDisconnectedCb(uint32_t *args)
@@ -186,7 +185,24 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 	  //gpio_output_set(0, BIT2, BIT2, 0);
 	  GPIO_OUTPUT_SET(LED1_GPIO, 0);
 	 } else {
-	  INFO("\r\n Unable to parse data and set gpio2: \r\n");
+	  INFO("\r\n Unable to parse data and set led1: \r\n");
+	 }
+	} else if(0 == os_strcmp(topicBuf,"sensor/node1/control/led2")) {
+	 INFO("LED2 sub\r\n");
+	 if (0 == os_strcmp(dataBuf,"on"))
+	 {
+	  INFO("LED2 sub data high\r\n");
+	  //Set GPIO2 to HIGH
+	  //gpio_output_set(BIT2, 0, BIT2, 0);
+	  GPIO_OUTPUT_SET(LED2_GPIO, 1);
+	 } else if (0 == os_strcmp(dataBuf,"off"))
+	 {
+	  INFO("LED2 sub data low\r\n");
+	  //Set GPIO2 to LOW
+	  //gpio_output_set(0, BIT2, BIT2, 0);
+	  GPIO_OUTPUT_SET(LED2_GPIO, 0);
+	 } else {
+	  INFO("\r\n Unable to parse data and set led2: \r\n");
 	 }
 	}
 
@@ -239,10 +255,11 @@ void user_init(void)
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 
 	INFO("\r\nSystem started ...\r\n");
+
 #ifdef __DHT22_H__
-os_timer_disarm(&dht22_timer);
-os_timer_setfn(&dht22_timer, (os_timer_func_t *)dht22_cb, (void *)0);
-os_timer_arm(&dht22_timer, DELAY, 1);
+	os_timer_disarm(&dht22_timer);
+	os_timer_setfn(&dht22_timer, (os_timer_func_t *)dht22_cb, (void *)0);
+	os_timer_arm(&dht22_timer, DELAY, 1);
 #endif
 
 }
