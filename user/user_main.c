@@ -139,7 +139,7 @@ void mqttConnectedCb(uint32_t *args)
 	MQTT_Subscribe(client, "sensor/node1/control/led1", 2);
 	//uncomment next line for second subscription, but the first uses wildcard
 	MQTT_Subscribe(client, "sensor/node1/control/led2", 2);
-	MQTT_Publish(client, "sensor/node1/a", "online", 6, 0, 0);
+	//MQTT_Publish(client, "sensor/node1/a", "online", 6, 0, 0);
 }
 
 void mqttDisconnectedCb(uint32_t *args)
