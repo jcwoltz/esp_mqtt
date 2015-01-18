@@ -84,26 +84,26 @@ static volatile os_timer_t some_timer;
 
 void some_timerfunc(void *arg)
 {
-    //Do blinky stuff on LED4
-    if (GPIO_REG_READ(GPIO_OUT_ADDRESS) & BIT13)
-    {
-        //Set GPIO13 to LOW
-	//GPIO_OUTPUT_SET(LED4_GPIO, 0);
-        gpio_output_set(0, BIT13, BIT13, 0);
-    }
-    else
-    {
-        //Set GPIO13 to HIGH
-	//GPIO_OUTPUT_SET(LED4_GPIO, 1);
-        gpio_output_set(BIT13, 0, BIT13, 0);
-    }
+	//Do blinky stuff on LED4
+	if (GPIO_REG_READ(GPIO_OUT_ADDRESS) & BIT13)
+	{
+		//Set GPIO13 to LOW
+		//GPIO_OUTPUT_SET(LED4_GPIO, 0);
+		gpio_output_set(0, BIT13, BIT13, 0);
+	}
+	else
+	{
+		//Set GPIO13 to HIGH
+		//GPIO_OUTPUT_SET(LED4_GPIO, 1);
+		gpio_output_set(BIT13, 0, BIT13, 0);
+	}
 }
 
 //Do nothing function
 static void ICACHE_FLASH_ATTR
 user_procTask(os_event_t *events)
 {
-    os_delay_us(10);
+	os_delay_us(10);
 }
 
 
@@ -143,7 +143,7 @@ void mqttPublishedCb(uint32_t *args)
 void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len)
 {
 	char *topicBuf = (char*)os_zalloc(topic_len+1),
-			*dataBuf = (char*)os_zalloc(data_len+1);
+	*dataBuf = (char*)os_zalloc(data_len+1);
 
 	MQTT_Client* client = (MQTT_Client*)args;
 
@@ -155,39 +155,39 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
 	if(0 == os_strcmp(topicBuf,"sensor/node1/control/led1")) {
-	 INFO("LED1 sub\r\n");
-	 if (0 == os_strcmp(dataBuf,"on"))
-	 {
-	  INFO("LED1 sub data high\r\n");
-	  //Set GPIO2 to HIGH
-	  //gpio_output_set(BIT2, 0, BIT2, 0);
-	  GPIO_OUTPUT_SET(LED1_GPIO, 1);
-	 } else if (0 == os_strcmp(dataBuf,"off"))
-	 {
-	  INFO("LED1 sub data low\r\n");
-	  //Set GPIO2 to LOW
-	  //gpio_output_set(0, BIT2, BIT2, 0);
-	  GPIO_OUTPUT_SET(LED1_GPIO, 0);
-	 } else {
-	  INFO("\r\n Unable to parse data and set led1: \r\n");
-	 }
+		INFO("LED1 sub\r\n");
+		if (0 == os_strcmp(dataBuf,"on"))
+		{
+			INFO("LED1 sub data high\r\n");
+			//Set GPIO2 to HIGH
+			//gpio_output_set(BIT2, 0, BIT2, 0);
+			GPIO_OUTPUT_SET(LED1_GPIO, 1);
+		} else if (0 == os_strcmp(dataBuf,"off"))
+		{
+			INFO("LED1 sub data low\r\n");
+			//Set GPIO2 to LOW
+			//gpio_output_set(0, BIT2, BIT2, 0);
+			GPIO_OUTPUT_SET(LED1_GPIO, 0);
+		} else {
+			INFO("\r\n Unable to parse data and set led1: \r\n");
+		}
 	} else if(0 == os_strcmp(topicBuf,"sensor/node1/control/led2")) {
-	 INFO("LED2 sub\r\n");
-	 if (0 == os_strcmp(dataBuf,"on"))
-	 {
-	  INFO("LED2 sub data high\r\n");
-	  //Set GPIO2 to HIGH
-	  //gpio_output_set(BIT2, 0, BIT2, 0);
-	  GPIO_OUTPUT_SET(LED2_GPIO, 1);
-	 } else if (0 == os_strcmp(dataBuf,"off"))
-	 {
-	  INFO("LED2 sub data low\r\n");
-	  //Set GPIO2 to LOW
-	  //gpio_output_set(0, BIT2, BIT2, 0);
-	  GPIO_OUTPUT_SET(LED2_GPIO, 0);
-	 } else {
-	  INFO("\r\n Unable to parse data and set led2: \r\n");
-	 }
+		INFO("LED2 sub\r\n");
+		if (0 == os_strcmp(dataBuf,"on"))
+		{
+			INFO("LED2 sub data high\r\n");
+			//Set GPIO2 to HIGH
+			//gpio_output_set(BIT2, 0, BIT2, 0);
+			GPIO_OUTPUT_SET(LED2_GPIO, 1);
+		} else if (0 == os_strcmp(dataBuf,"off"))
+		{
+			INFO("LED2 sub data low\r\n");
+			//Set GPIO2 to LOW
+			//gpio_output_set(0, BIT2, BIT2, 0);
+			GPIO_OUTPUT_SET(LED2_GPIO, 0);
+		} else {
+			INFO("\r\n Unable to parse data and set led2: \r\n");
+		}
 	}
 
 
@@ -200,7 +200,7 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 void user_init(void)
 {
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
-		gpio_init();
+	gpio_init();
 	PIN_FUNC_SELECT(LED1_GPIO_MUX, LED1_GPIO_FUNC);
 	PIN_FUNC_SELECT(LED2_GPIO_MUX, LED2_GPIO_FUNC);
 	PIN_FUNC_SELECT(LED3_GPIO_MUX, LED3_GPIO_FUNC);
@@ -211,22 +211,22 @@ void user_init(void)
 	GPIO_OUTPUT_SET(LED4_GPIO, 0);
 	//DHTInit(DHT11, 2000);
 
-        //Set GPIO2 to output mode
-        //PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_GPIO2);
-        //Set GPIO2 low
-        //gpio_output_set(0, BIT2, BIT2, 0);
+	//Set GPIO2 to output mode
+	//PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_GPIO2);
+	//Set GPIO2 low
+	//gpio_output_set(0, BIT2, BIT2, 0);
 
-        //Disarm timer
-        os_timer_disarm(&some_timer);
-        //Setup timer
-        os_timer_setfn(&some_timer, (os_timer_func_t *)some_timerfunc, NULL);
-        //Arm the timer
-        //&some_timer is the pointer
-        //1000 is the fire time in ms
-        //0 for once and 1 for repeating
+	//Disarm timer
+	os_timer_disarm(&some_timer);
+	//Setup timer
+	os_timer_setfn(&some_timer, (os_timer_func_t *)some_timerfunc, NULL);
+	//Arm the timer
+	//&some_timer is the pointer
+	//1000 is the fire time in ms
+	//0 for once and 1 for repeating
 	os_timer_arm(&some_timer, 50, 1);
-        //Start os task
-        system_os_task(user_procTask, user_procTaskPrio,user_procTaskQueue, user_procTaskQueueLen);
+	//Start os task
+	system_os_task(user_procTask, user_procTaskPrio,user_procTaskQueue, user_procTaskQueueLen);
 
 
 
