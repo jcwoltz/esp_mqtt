@@ -107,7 +107,6 @@ user_procTask(os_event_t *events)
 }
 
 
-
 void wifiConnectCb(uint8_t status)
 {
 	if(status == STATION_GOT_IP){
@@ -125,7 +124,7 @@ void mqttConnectedCb(uint32_t *args)
 	//MQTT_Publish(client, "/mqtt/topic/0", "hello0", 6, 0, 0);
 	//MQTT_Publish(client, "/mqtt/topic/1", "hello1", 6, 1, 0);
 	MQTT_Publish(client, "sensor/node1/dead", "online", 6, 2, 0);
-
+	
 }
 
 void mqttDisconnectedCb(uint32_t *args)
@@ -154,6 +153,7 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 	dataBuf[data_len] = 0;
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
+	
 	if(0 == os_strcmp(topicBuf,"sensor/node1/control/led1")) {
 		INFO("LED1 sub\r\n");
 		if (0 == os_strcmp(dataBuf,"on"))
@@ -190,8 +190,6 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 		}
 	}
 
-
-
 	os_free(topicBuf);
 	os_free(dataBuf);
 }
@@ -227,7 +225,6 @@ void user_init(void)
 	os_timer_arm(&some_timer, 50, 1);
 	//Start os task
 	//system_os_task(user_procTask, user_procTaskPrio,user_procTaskQueue, user_procTaskQueueLen);
-
 
 
 	os_delay_us(1000000);
