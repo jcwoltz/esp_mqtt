@@ -124,7 +124,7 @@ void mqttConnectedCb(uint32_t *args)
 
 	//MQTT_Publish(client, "/mqtt/topic/0", "hello0", 6, 0, 0);
 	//MQTT_Publish(client, "/mqtt/topic/1", "hello1", 6, 1, 0);
-	//MQTT_Publish(client, "/mqtt/topic/2", "hello2", 6, 2, 0);
+	MQTT_Publish(client, "sensor/node1/dead", "online", 6, 2, 0);
 
 }
 
@@ -226,7 +226,7 @@ void user_init(void)
 	//0 for once and 1 for repeating
 	os_timer_arm(&some_timer, 50, 1);
 	//Start os task
-	system_os_task(user_procTask, user_procTaskPrio,user_procTaskQueue, user_procTaskQueueLen);
+	//system_os_task(user_procTask, user_procTaskPrio,user_procTaskQueue, user_procTaskQueueLen);
 
 
 
@@ -240,7 +240,7 @@ void user_init(void)
 	MQTT_InitClient(&mqttClient, sysCfg.device_id, sysCfg.mqtt_user, sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);
 	//MQTT_InitClient(&mqttClient, "client_id", "user", "pass", 120, 1);
 
-	MQTT_InitLWT(&mqttClient, "sensor/node1/dead", "offline", 0, 0);
+	MQTT_InitLWT(&mqttClient, "sensor/node1/dead", "offline", 2, 1);
 	MQTT_OnConnected(&mqttClient, mqttConnectedCb);
 	MQTT_OnDisconnected(&mqttClient, mqttDisconnectedCb);
 	MQTT_OnPublished(&mqttClient, mqttPublishedCb);
